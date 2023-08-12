@@ -1,6 +1,10 @@
 package main
 
-import "github.com/nmema/pokedexgo/internal/pokeapi"
+import (
+	"time"
+
+	"github.com/nmema/pokedexgo/internal/pokeapi"
+)
 
 type config struct {
 	pokeapiClient pokeapi.Client
@@ -10,7 +14,7 @@ type config struct {
 
 func main() {
 	config := config{
-		pokeapiClient: pokeapi.NewClient(),
+		pokeapiClient: pokeapi.NewClient(time.Hour),
 	}
 
 	startRelp(&config)
