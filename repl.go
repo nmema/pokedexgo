@@ -23,15 +23,20 @@ func startRelp(conf *config) {
 
 		commands := getCommands()
 
-		user_command := words[0]
-		command, ok := commands[user_command]
+		userCommand := words[0]
+		command, ok := commands[userCommand]
 
 		if !ok {
 			fmt.Println("Invalid command.")
 			continue
 		}
 
-		err := command.callback(conf)
+		args := []string{}
+		if len(words) > 1 {
+			args = words[1:]
+		}
+
+		err := command.callback(conf, args...)
 
 		if err != nil {
 			fmt.Println(err)
@@ -44,7 +49,7 @@ func startRelp(conf *config) {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config) error
+	callback    func(*config, ...string) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -68,6 +73,11 @@ func getCommands() map[string]cliCommand {
 			name:        "mapb",
 			description: "Displays the previous 20 locations ares in the Pokemon World",
 			callback:    commandMapb,
+		},
+		"explore": {
+			name:        "explore {location}",
+			description: "Give the list of Pokemon that a appear on a given area",
+			callback:    commandExplore,
 		},
 	}
 }
